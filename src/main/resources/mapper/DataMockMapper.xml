@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--DataMock表的增删改查-->
+<mapper namespace="com.move.mock.mapper.DataMockMapper">
+
+    <resultMap id="dataMock" type="com.move.mock.bean.DataMock">
+        <id column="id" property="id"/>
+        <result column="project" property="project"/>
+        <result column="platform" property="platform"/>
+        <result column="env" property="env"/>
+        <result column="version" property="version"/>
+        <result column="createtime" property="createtime"/>
+        <result column="modifytime" property="modifytime"/>
+        <result column="request_url" property="requestUrl"/>
+        <result column="userId" property="userId"/>
+        <result column="data_link" property="dataLink"/>
+    </resultMap>
+
+    <!--根据id查询用户-->
+    <insert id="insert" parameterType="com.move.mock.bean.DataMock">
+		insert into data_mock
+		(project,platform,env,version,createtime,modifytime,request_url,userId,data_link)
+		values
+		(#{project},#{platform},#{env},#{version},#{createtime},#{modifytime},#{requestUrl},#{userId},#{dataLink})
+	</insert>
+
+</mapper>
