@@ -4,7 +4,7 @@ import com.move.mock.util.TextUtil;
 
 import java.io.Serializable;
 
-public class DataMockRequest implements Serializable {
+public class NetworkDataBean implements Serializable {
 
     public static final String DATA_TYPE_OK = "ok";
     public static final String DATA_TYPE_ERROR = "error";

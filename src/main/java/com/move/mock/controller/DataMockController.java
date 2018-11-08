@@ -1,7 +1,6 @@
 package com.move.mock.controller;
 
-import com.move.mock.bean.DataMock;
-import com.move.mock.bean.DataMockRequest;
+import com.move.mock.bean.NetworkDataBean;
 import com.move.mock.service.DataMockService;
 import com.move.mock.util.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * org.springframework.transaction.NoTransactionException: No transaction aspect-managed TransactionStatus in scope
  */
-@RequestMapping("dataMock")
+@RequestMapping("networkMock")
 @RestController()
 public class DataMockController {
 
     @Autowired
     DataMockService dataMockService;
 
-    @PostMapping("/save")
-    public String save(DataMockRequest dataMock) {
+    @PostMapping("/data")
+    public String save(NetworkDataBean dataMock) {
 
         String result = null;
 
@@ -40,5 +39,7 @@ public class DataMockController {
         return result;
 
     }
+
+
 
 }

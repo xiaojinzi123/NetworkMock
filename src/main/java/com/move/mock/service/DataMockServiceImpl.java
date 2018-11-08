@@ -3,7 +3,7 @@ package com.move.mock.service;
 import com.move.mock.base.dao.BaseDao;
 import com.move.mock.base.service.BaseServiceImpl;
 import com.move.mock.bean.DataMock;
-import com.move.mock.bean.DataMockRequest;
+import com.move.mock.bean.NetworkDataBean;
 import com.move.mock.mapper.DataMockMapper;
 import com.move.mock.util.BusinessException;
 import com.move.mock.util.FileUtil;
@@ -28,7 +28,7 @@ public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements Da
     }
 
     @Transactional
-    public void insert(DataMockRequest dataMockRequest) throws BusinessException {
+    public void insert(NetworkDataBean networkDataBean) throws BusinessException {
 
         File folder = new File(System.getProperty("user.dir"), "/mock");
 
@@ -39,7 +39,7 @@ public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements Da
             }
         }
 
-        if (!dataMockRequest.isDataFull()) {
+        if (!networkDataBean.isDataFull()) {
             throw new BusinessException("信息不完整");
         }
 
@@ -48,7 +48,7 @@ public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements Da
 
         try {
 
-            String url = dataMockRequest.getRequestUrl();
+            String url = networkDataBean.getRequestUrl();
 
             // 用于 url query 的精细化的分类,根据 rule 表
             URI uri = URI.create(url);
@@ -65,14 +65,14 @@ public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements Da
         }
 
         DataMock dataMock = new DataMock();
-        dataMock.setProject(dataMockRequest.getProject());
-        dataMock.setPlatform(dataMockRequest.getPlatform());
-        dataMock.setEnv(dataMockRequest.getEnv());
-        dataMock.setVersion(dataMockRequest.getVersion());
+        dataMock.setProject(networkDataBean.getProject());
+        dataMock.setPlatform(networkDataBean.getPlatform());
+        dataMock.setEnv(networkDataBean.getEnv());
+        dataMock.setVersion(networkDataBean.getVersion());
         dataMock.setRequestUrl(resultUrl);
-        dataMock.setRequestMethod(dataMockRequest.getRequestMethod());
-        dataMock.setUserId(dataMockRequest.getUserId());
-        dataMock.setDataType(dataMockRequest.getDataType());
+        dataMock.setRequestMethod(networkDataBean.getRequestMethod());
+        dataMock.setUserId(networkDataBean.getUserId());
+        dataMock.setDataType(networkDataBean.getDataType());
 
         // 计算一个唯一值
 
@@ -92,7 +92,7 @@ public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements Da
         File file = new File(folder, md5 + ".data");
 
         try {
-            FileUtil.saveToFile(file,dataMockRequest.getData());
+            FileUtil.saveToFile(file, networkDataBean.getData());
         } catch (IOException e) {
             throw new BusinessException("文件存储失败");
         }
