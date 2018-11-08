@@ -1,9 +1,11 @@
 package com.move.mock.controller;
 
+import com.move.mock.bean.NetworkDataAccess;
 import com.move.mock.bean.NetworkDataBean;
 import com.move.mock.service.DataMockService;
 import com.move.mock.util.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +39,19 @@ public class DataMockController {
         System.out.println("result = " + result);
 
         return result;
+
+    }
+
+    @GetMapping("/data")
+    public String get (NetworkDataAccess dataAccess) throws BusinessException {
+
+        String result = null;
+
+        if (dataAccess == null) {
+            throw new BusinessException("parameter error");
+        }
+
+        return dataMockService.get(dataAccess);
 
     }
 

@@ -3,6 +3,7 @@ package com.move.mock.service;
 import com.move.mock.base.dao.BaseDao;
 import com.move.mock.base.service.BaseServiceImpl;
 import com.move.mock.bean.DataMock;
+import com.move.mock.bean.NetworkDataAccess;
 import com.move.mock.bean.NetworkDataBean;
 import com.move.mock.mapper.DataMockMapper;
 import com.move.mock.util.BusinessException;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 @Service("dataMockService")
 public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements DataMockService {
@@ -56,7 +58,7 @@ public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements Da
             int index = -1;
             if ((index = url.lastIndexOf('?')) != -1) {
                 resultUrl = url.substring(0, index);
-            }else {
+            } else {
                 resultUrl = url;
             }
 
@@ -102,6 +104,40 @@ public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements Da
         dataMock.setModifytime(System.currentTimeMillis());
 
         insert(dataMock);
+
+    }
+
+    @Override
+    public String get(NetworkDataAccess networkDataAccess) throws BusinessException {
+
+        if (!networkDataAccess.isDataFull()) {
+            throw new BusinessException("少传入参数了");
+        }
+
+        List<DataMock> dataMockList = dataMockMapper.get(networkDataAccess);
+
+        if (dataMockList == null ||
+                dataMockList.isEmpty()) {
+
+            throw new BusinessException("数据为空或者不唯一");
+        }
+
+        DataMock dataMock = dataMockList.get(0);
+
+        return dataMock.toString();
+
+        /*File folder = new File(System.getProperty("user.dir"), "/mock");
+        File file = new File(folder, dataMock.getDataLink());
+
+        if (!file.exists()) {
+            throw new BusinessException("file is not exist");
+        }
+
+        try {
+            return FileUtil.getFromFile(file);
+        } catch (IOException e) {
+            throw new BusinessException("文件读取失败");
+        }*/
 
     }
 

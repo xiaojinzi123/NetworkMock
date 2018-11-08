@@ -21,12 +21,17 @@
         <result column="data_link" property="dataLink"/>
     </resultMap>
 
-    <!--根据id查询用户-->
     <insert id="insert" parameterType="com.move.mock.bean.DataMock">
 		insert into data_mock
 		(project,platform,env,version,createtime,modifytime,request_url,request_method,userId,data_type,data_link)
 		values
 		(#{project},#{platform},#{env},#{version},#{createtime},#{modifytime},#{requestUrl},#{requestMethod},#{userId},#{dataType},#{dataLink})
 	</insert>
+
+    <select id="get" resultMap="dataMock" parameterType="com.move.mock.bean.NetworkDataAccess">
+        select * from data_mock where
+        project = #{project} and platform = #{platform} and env = #{env} and version = #{version}
+        and request_url = #{requestUrl} and request_method = #{requestMethod} and userId = #{userId}
+    </select>
 
 </mapper>

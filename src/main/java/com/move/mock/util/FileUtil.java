@@ -26,4 +26,38 @@ public class FileUtil {
 
     }
 
+    public static String getFromFile(File file) throws IOException {
+
+        FileInputStream inputStream = null;
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            inputStream = new FileInputStream(file);
+
+            int len = -1;
+            byte[] bf = new byte[1024];
+
+            while ((len = inputStream.read(bf)) != -1) {
+                byteArrayOutputStream.write(bf,0,len);
+            }
+            inputStream.close();
+
+            return new String(byteArrayOutputStream.toByteArray(), Constant.CHARSET);
+
+        }catch (IOException e) {
+            throw e;
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException ignore) {
+                }
+                inputStream = null;
+            }
+        }
+
+    }
+
+
+
 }
