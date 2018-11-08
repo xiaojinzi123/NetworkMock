@@ -20,7 +20,11 @@ public class DataMock implements Serializable {
 
     private String requestUrl;
 
+    private String requestMethod;
+
     private String userId;
+
+    private String dataType;
 
     private String dataLink;
 
@@ -91,12 +95,28 @@ public class DataMock implements Serializable {
         this.requestUrl = requestUrl;
     }
 
+    public String getRequestMethod() {
+        return requestMethod;
+    }
+
+    public void setRequestMethod(String requestMethod) {
+        this.requestMethod = requestMethod;
+    }
+
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
     }
 
     public String getDataLink() {

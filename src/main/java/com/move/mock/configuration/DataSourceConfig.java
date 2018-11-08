@@ -29,7 +29,7 @@ public class DataSourceConfig {
     public DataSource dataSource() throws PropertyVetoException {
 
         ComboPooledDataSource dataSource = DataSourceBuilder.create().type(ComboPooledDataSource.class).build();
-        dataSource.setJdbcUrl("jdbc:mysql://localhost/appDev?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
+        dataSource.setJdbcUrl("jdbc:mysql://192.168.5.105:13306/appDev?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
         dataSource.setUser("root");
         dataSource.setPassword("admin");
         dataSource.setDriverClass("com.mysql.cj.jdbc.Driver");

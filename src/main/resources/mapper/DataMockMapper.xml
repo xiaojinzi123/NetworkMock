@@ -15,16 +15,18 @@
         <result column="createtime" property="createtime"/>
         <result column="modifytime" property="modifytime"/>
         <result column="request_url" property="requestUrl"/>
+        <result column="request_method" property="requestMethod"/>
         <result column="userId" property="userId"/>
+        <result column="data_type" property="dataType"/>
         <result column="data_link" property="dataLink"/>
     </resultMap>
 
     <!--根据id查询用户-->
     <insert id="insert" parameterType="com.move.mock.bean.DataMock">
 		insert into data_mock
-		(project,platform,env,version,createtime,modifytime,request_url,userId,data_link)
+		(project,platform,env,version,createtime,modifytime,request_url,request_method,userId,data_type,data_link)
 		values
-		(#{project},#{platform},#{env},#{version},#{createtime},#{modifytime},#{requestUrl},#{userId},#{dataLink})
+		(#{project},#{platform},#{env},#{version},#{createtime},#{modifytime},#{requestUrl},#{requestMethod},#{userId},#{dataType},#{dataLink})
 	</insert>
 
 </mapper>
