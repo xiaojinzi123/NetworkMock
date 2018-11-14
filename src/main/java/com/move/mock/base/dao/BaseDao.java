@@ -1,6 +1,8 @@
 package com.move.mock.base.dao;
 
 
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -25,6 +27,15 @@ public interface BaseDao<T, PK> {
     List<T> queryAll();
 
     /**
+     * 分页查询
+     *
+     * @param currentIndex
+     * @param pageSize
+     * @return
+     */
+    List<T> queryPage(@Param("currentIndex") int currentIndex, @Param("pageSize") int pageSize);
+
+    /**
      * 插入一个对象
      *
      * @param t
@@ -47,5 +58,12 @@ public interface BaseDao<T, PK> {
      * @return
      */
     void delete(PK pk) throws Exception;
+
+    /**
+     * 总的记录数目
+     *
+     * @return
+     */
+    long count();
 
 }

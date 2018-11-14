@@ -4,6 +4,7 @@ import com.move.mock.bean.NetworkDataAccess;
 import com.move.mock.bean.NetworkDataBean;
 import com.move.mock.service.DataMockService;
 import com.move.mock.util.BusinessException;
+import com.move.mock.util.ResultBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,40 +22,34 @@ public class DataMockController {
     DataMockService dataMockService;
 
     @PostMapping("/data")
-    public String save(NetworkDataBean dataMock) {
-
-        String result = null;
+    public ResultBean save(NetworkDataBean dataMock) {
 
         if (dataMock == null) {
-            result = "fail";
+            return ResultBean.error("parameter is null");
         }
 
         try {
             dataMockService.insert(dataMock);
-            result = "success";
+            return ResultBean.success();
         } catch (BusinessException e) {
-            result = "fail:" + e.getMessage();
+            return ResultBean.error(e.getMessage());
         }
-
-        System.out.println("result = " + result);
-
-        return result;
 
     }
 
     @GetMapping("/data")
-    public String get (NetworkDataAccess dataAccess) throws BusinessException {
-
-        String result = null;
+    public ResultBean<String> get(NetworkDataAccess dataAccess) throws BusinessException {
 
         if (dataAccess == null) {
-            throw new BusinessException("parameter error");
+            return ResultBean.error("parameter is null");
         }
 
-        return dataMockService.get(dataAccess);
+        try {
+            return ResultBean.success(dataMockService.get(dataAccess));
+        } catch (BusinessException e) {
+            return ResultBean.error(e.getMessage());
+        }
 
     }
-
-
 
 }

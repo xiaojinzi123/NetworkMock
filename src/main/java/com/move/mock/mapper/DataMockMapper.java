@@ -4,6 +4,7 @@ import com.move.mock.base.dao.BaseDao;
 import com.move.mock.bean.DataMock;
 import com.move.mock.bean.NetworkDataAccess;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,5 +21,13 @@ public interface DataMockMapper extends BaseDao<DataMock, Integer> {
      * @return
      */
     List<DataMock> get(NetworkDataAccess networkDataAccess);
+
+    /**
+     * 根据 DataLink 获取对象
+     *
+     * @param dataLink
+     * @return
+     */
+    DataMock getByDataLink(@Param("dataLink") String dataLink);
 
 }

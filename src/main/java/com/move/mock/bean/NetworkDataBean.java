@@ -4,6 +4,10 @@ import com.move.mock.util.TextUtil;
 
 import java.io.Serializable;
 
+/**
+ * 对外的模拟数据录入对象,客户端发送的数据最终会经过业务处理后转化成{@link DataMock}
+ * 然后保存到数据库
+ */
 public class NetworkDataBean implements Serializable {
 
     public static final String DATA_TYPE_OK = "ok";

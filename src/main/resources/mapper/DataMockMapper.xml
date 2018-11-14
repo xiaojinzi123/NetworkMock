@@ -14,24 +14,44 @@
         <result column="version" property="version"/>
         <result column="createtime" property="createtime"/>
         <result column="modifytime" property="modifytime"/>
+        <result column="expiretime" property="expiretime"/>
         <result column="request_url" property="requestUrl"/>
         <result column="request_method" property="requestMethod"/>
-        <result column="userId" property="userId"/>
+        <result column="user_id" property="userId"/>
         <result column="data_type" property="dataType"/>
         <result column="data_link" property="dataLink"/>
     </resultMap>
 
+    <update id="update" parameterType="com.move.mock.bean.DataMock">
+        update network_mock_data
+        set project = #{project},platform = #{platform},env = #{env},version = #{version},
+        createtime = #{createtime},modifytime = #{modifytime},expiretime = #{expiretime},request_url = #{requestUrl},
+        request_method = #{requestMethod},user_id = #{userId},data_type = #{dataType},data_link = #{dataLink}
+        where id = #{id}
+    </update>
+
     <insert id="insert" parameterType="com.move.mock.bean.DataMock">
-		insert into data_mock
-		(project,platform,env,version,createtime,modifytime,request_url,request_method,userId,data_type,data_link)
+		insert into network_mock_data
+		(project,platform,env,version,createtime,modifytime,expiretime,request_url,request_method,user_id,data_type,data_link)
 		values
-		(#{project},#{platform},#{env},#{version},#{createtime},#{modifytime},#{requestUrl},#{requestMethod},#{userId},#{dataType},#{dataLink})
+		(#{project},#{platform},#{env},#{version},#{createtime},#{modifytime},#{expiretime},#{requestUrl},#{requestMethod},
+		#{userId},#{dataType},#{dataLink})
 	</insert>
 
     <select id="get" resultMap="dataMock" parameterType="com.move.mock.bean.NetworkDataAccess">
-        select * from data_mock where
-        project = #{project} and platform = #{platform} and env = #{env} and version = #{version}
-        and request_url = #{requestUrl} and request_method = #{requestMethod} and userId = #{userId}
+        select * from network_mock_data
+        where project = #{project} and platform = #{platform} and env = #{env} and version = #{version}
+        and request_url = #{requestUrl} and request_method = #{requestMethod}
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
+        and data_type = #{dataType}
     </select>
+
+    <select id="getByDataLink" resultMap="dataMock">
+        select * from network_mock_data
+        where data_link = #{dataLink}
+    </select>
+
 
 </mapper>

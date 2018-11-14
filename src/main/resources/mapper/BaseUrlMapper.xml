@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--DataMock表的增删改查-->
+<mapper namespace="com.move.mock.mapper.BaseUrlMapper">
+
+    <resultMap id="entity" type="com.move.mock.bean.BaseUrlBean">
+        <id column="id" property="id"/>
+        <result column="project" property="project"/>
+        <result column="platform" property="platform"/>
+        <result column="env" property="env"/>
+        <result column="base_url" property="baseUrl"/>
+    </resultMap>
+
+    <!--<update id="update" parameterType="com.move.mock.bean.DataMock">
+        update data_mock set project = #{project},platform = #{platform},env = #{env},version = #{version},
+        createtime = #{createtime},modifytime = #{modifytime},expiretime = #{expiretime},request_url = #{requestUrl},
+        request_method = #{requestMethod},user_id = #{userId},data_type = #{dataType},data_link = #{dataLink}
+        where id = #{id}
+    </update>-->
+
+    <insert id="insert" parameterType="com.move.mock.bean.BaseUrlBean">
+		insert into network_mock_baseurl
+		(project,platform,env,base_url)
+		values
+		(#{project},#{platform},#{env},#{baseUrl})
+	</insert>
+
+    <select id="queryPage" resultMap="entity">
+        select * from network_mock_baseurl
+        limit #{currentIndex},#{pageSize}
+    </select>
+
+    <select id="count" resultType="java.lang.Long">
+        select count(*) from network_mock_baseurl
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from network_mock_baseurl where id=#{pk}
+    </delete>
+
+</mapper>

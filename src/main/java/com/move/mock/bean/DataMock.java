@@ -2,6 +2,9 @@ package com.move.mock.bean;
 
 import java.io.Serializable;
 
+/**
+ * 对应数据库表的:network_mock_data
+ */
 public class DataMock implements Serializable {
 
     private Integer id;
@@ -17,6 +20,8 @@ public class DataMock implements Serializable {
     private long createtime;
 
     private long modifytime;
+
+    private long expiretime;
 
     private String requestUrl;
 
@@ -85,6 +90,14 @@ public class DataMock implements Serializable {
 
     public void setModifytime(long modifytime) {
         this.modifytime = modifytime;
+    }
+
+    public long getExpiretime() {
+        return expiretime;
+    }
+
+    public void setExpiretime(long expiretime) {
+        this.expiretime = expiretime;
     }
 
     public String getRequestUrl() {

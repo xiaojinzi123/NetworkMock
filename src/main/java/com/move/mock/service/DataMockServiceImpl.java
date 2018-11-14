@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 @Service("dataMockService")
 public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements DataMockService {
@@ -56,7 +58,7 @@ public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements Da
             URI uri = URI.create(url);
 
             int index = -1;
-            if ((index = url.lastIndexOf('?')) != -1) {
+            if ((index = url.indexOf('?')) != -1) {
                 resultUrl = url.substring(0, index);
             } else {
                 resultUrl = url;
@@ -91,19 +93,43 @@ public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements Da
             throw new BusinessException("计算唯一值失败");
         }
 
+        DataMock dbDataMock = dataMockMapper.getByDataLink(md5 + ".data");
+
         File file = new File(folder, md5 + ".data");
 
-        try {
-            FileUtil.saveToFile(file, networkDataBean.getData());
-        } catch (IOException e) {
-            throw new BusinessException("文件存储失败");
+        // 说明已经存过了
+        if (dbDataMock != null) {
+            // 如果过期了
+            if (dbDataMock.getExpiretime() != 0 && dbDataMock.getExpiretime() < System.currentTimeMillis()) {
+                try {
+                    FileUtil.saveToFile(file, networkDataBean.getData());
+                } catch (IOException ignore) {
+                    // ignore
+                }
+                dbDataMock.setModifytime(System.currentTimeMillis());
+
+                // 更新实体对象
+                update(dbDataMock);
+
+            }
+        } else {
+
+            try {
+                FileUtil.saveToFile(file, networkDataBean.getData());
+            } catch (IOException e) {
+                throw new BusinessException("文件存储失败");
+            }
+
+            dataMock.setDataLink(file.getName());
+            long currentTimeMillis = System.currentTimeMillis();
+            dataMock.setCreatetime(currentTimeMillis);
+            dataMock.setModifytime(currentTimeMillis);
+            // 表示永远不过期
+            dataMock.setExpiretime(0);
+
+            insert(dataMock);
+
         }
-
-        dataMock.setDataLink(file.getName());
-        dataMock.setCreatetime(System.currentTimeMillis());
-        dataMock.setModifytime(System.currentTimeMillis());
-
-        insert(dataMock);
 
     }
 
@@ -114,19 +140,41 @@ public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements Da
             throw new BusinessException("少传入参数了");
         }
 
+        // 最终记录在数据库中的 url
+        String resultUrl = null;
+
+        try {
+
+            String url = networkDataAccess.getRequestUrl();
+
+            // 用于 url query 的精细化的分类,根据 rule 表
+            URI.create(url);
+
+            int index = -1;
+            if ((index = url.indexOf('?')) != -1) {
+                resultUrl = url.substring(0, index);
+            } else {
+                resultUrl = url;
+            }
+
+        } catch (IllegalArgumentException ignore) {
+            throw new BusinessException("request url 不合法");
+        }
+
+        networkDataAccess.setRequestUrl(resultUrl);
+
         List<DataMock> dataMockList = dataMockMapper.get(networkDataAccess);
 
         if (dataMockList == null ||
-                dataMockList.isEmpty()) {
+                dataMockList.isEmpty() ||
+                dataMockList.size() > 1) {
 
             throw new BusinessException("数据为空或者不唯一");
         }
 
         DataMock dataMock = dataMockList.get(0);
 
-        return dataMock.toString();
-
-        /*File folder = new File(System.getProperty("user.dir"), "/mock");
+        File folder = new File(System.getProperty("user.dir"), "/mock");
         File file = new File(folder, dataMock.getDataLink());
 
         if (!file.exists()) {
@@ -137,7 +185,7 @@ public class DataMockServiceImpl extends BaseServiceImpl<DataMock> implements Da
             return FileUtil.getFromFile(file);
         } catch (IOException e) {
             throw new BusinessException("文件读取失败");
-        }*/
+        }
 
     }
 

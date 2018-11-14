@@ -11,6 +11,17 @@ public interface BaseService<T, PK> {
 
     List<T> queryAll();
 
+    long count();
+
+    /**
+     * 分页查询
+     *
+     * @param pageSize
+     * @param pageIndex
+     * @return
+     */
+    List<T> queryPage(int pageIndex, int pageSize);
+
     void insert(T t) throws RuntimeException;
 
     void update(T t) throws RuntimeException;

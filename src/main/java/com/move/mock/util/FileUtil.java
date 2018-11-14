@@ -4,7 +4,7 @@ import java.io.*;
 
 public class FileUtil {
 
-    public static void saveToFile(File file, String data) throws IOException {
+    public static synchronized void saveToFile(File file, String data) throws IOException {
 
         FileOutputStream outputStream = null;
         try {
@@ -26,7 +26,7 @@ public class FileUtil {
 
     }
 
-    public static String getFromFile(File file) throws IOException {
+    public static synchronized String getFromFile(File file) throws IOException {
 
         FileInputStream inputStream = null;
 

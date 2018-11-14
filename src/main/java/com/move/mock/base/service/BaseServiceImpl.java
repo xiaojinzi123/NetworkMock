@@ -4,6 +4,7 @@ import com.move.mock.base.dao.BaseDao;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,13 +23,26 @@ public abstract class BaseServiceImpl<T> implements BaseService<T, Integer> {
         return getBaseDao().queryAll();
     }
 
+    @Override
+    public List<T> queryPage(int pageIndex, int pageSize) {
+        if (pageIndex == 0 || pageSize == 0) {
+            return new ArrayList<>(0);
+        }
+        return getBaseDao().queryPage((pageIndex - 1) * pageSize, pageSize);
+    }
+
+    @Override
+    public long count() {
+        return getBaseDao().count();
+    }
+
     @Transactional
     public void insert(T t) throws RuntimeException {
         try {
             getBaseDao().insert(t);
         } catch (Exception e) {
 //            result.resultText = e.getMessage();
-            e.printStackTrace();
+            //e.printStackTrace();
             //回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw new RuntimeException(e);
@@ -36,11 +50,11 @@ public abstract class BaseServiceImpl<T> implements BaseService<T, Integer> {
     }
 
     @Transactional
-    public void update(T t)  throws RuntimeException {
+    public void update(T t) throws RuntimeException {
         try {
             getBaseDao().update(t);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             //回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw new RuntimeException(e);
@@ -48,14 +62,14 @@ public abstract class BaseServiceImpl<T> implements BaseService<T, Integer> {
     }
 
     @Transactional
-    public void deleteById(Integer id)  throws RuntimeException {
+    public void deleteById(Integer id) throws RuntimeException {
         try {
             if (id == null) {
                 throw new IllegalArgumentException("id为空");
             }
             getBaseDao().delete(id);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             //回滚事务
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw new RuntimeException(e);
