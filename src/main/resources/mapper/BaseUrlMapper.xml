@@ -12,6 +12,7 @@
         <result column="platform" property="platform"/>
         <result column="env" property="env"/>
         <result column="base_url" property="baseUrl"/>
+        <result column="description" property="desc"/>
     </resultMap>
 
     <!--<update id="update" parameterType="com.move.mock.bean.DataMock">
@@ -23,10 +24,19 @@
 
     <insert id="insert" parameterType="com.move.mock.bean.BaseUrlBean">
 		insert into network_mock_baseurl
-		(project,platform,env,base_url)
+		(project,platform,env,base_url,description)
 		values
-		(#{project},#{platform},#{env},#{baseUrl})
+		(#{project},#{platform},#{env},#{baseUrl},#{desc})
 	</insert>
+
+    <insert id="update" parameterType="com.move.mock.bean.BaseUrlBean">
+		update network_mock_baseurl set project = #{project}, platform = #{platform}, env = #{env},
+		base_url = #{baseUrl},description = #{desc} where id = #{id}
+	</insert>
+
+    <select id="queryAll" resultMap="entity">
+        select * from network_mock_baseurl
+    </select>
 
     <select id="queryPage" resultMap="entity">
         select * from network_mock_baseurl

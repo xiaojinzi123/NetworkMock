@@ -82,7 +82,7 @@ public class BaseUrlBean implements Serializable {
             return false;
         }
 
-        return false;
+        return true;
 
     }
 

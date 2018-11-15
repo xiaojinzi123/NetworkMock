@@ -1,11 +1,13 @@
 package com.move.mock.bean;
 
+import com.move.mock.service.baseurl.BaseUrlCache;
+
 import java.io.Serializable;
 
 /**
  * 对应数据库表的:network_mock_data
  */
-public class DataMock implements Serializable {
+public class DataMock implements Serializable, BaseUrlCache.OnParseEnvInter {
 
     private Integer id;
 

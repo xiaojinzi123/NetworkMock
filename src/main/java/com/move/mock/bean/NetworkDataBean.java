@@ -17,8 +17,6 @@ public class NetworkDataBean implements Serializable {
 
     private String platform;
 
-    private String env;
-
     private int version;
 
     private String requestUrl;
@@ -52,14 +50,6 @@ public class NetworkDataBean implements Serializable {
 
     public void setPlatform(String platform) {
         this.platform = platform;
-    }
-
-    public String getEnv() {
-        return env;
-    }
-
-    public void setEnv(String env) {
-        this.env = env;
     }
 
     public int getVersion() {
@@ -115,7 +105,6 @@ public class NetworkDataBean implements Serializable {
         if (
                 TextUtil.isEmpty(project) ||
                         TextUtil.isEmpty(platform) ||
-                        TextUtil.isEmpty(env) ||
                         version <= 0 ||
                         TextUtil.isEmpty(requestUrl) ||
                         TextUtil.isEmpty(requestMethod) ||

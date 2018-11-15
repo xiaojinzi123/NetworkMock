@@ -13,16 +13,19 @@ import java.util.List;
  */
 public abstract class BaseServiceImpl<T> implements BaseService<T, Integer> {
 
+    @Override
     @Transactional
     public T queryById(Integer id) {
         return getBaseDao().queryById(id);
     }
 
+    @Override
     @Transactional
     public List<T> queryAll() {
         return getBaseDao().queryAll();
     }
 
+    @Transactional
     @Override
     public List<T> queryPage(int pageIndex, int pageSize) {
         if (pageIndex == 0 || pageSize == 0) {
@@ -32,10 +35,12 @@ public abstract class BaseServiceImpl<T> implements BaseService<T, Integer> {
     }
 
     @Override
+    @Transactional
     public long count() {
         return getBaseDao().count();
     }
 
+    @Override
     @Transactional
     public void insert(T t) throws RuntimeException {
         try {
@@ -49,6 +54,7 @@ public abstract class BaseServiceImpl<T> implements BaseService<T, Integer> {
         }
     }
 
+    @Override
     @Transactional
     public void update(T t) throws RuntimeException {
         try {
@@ -61,6 +67,7 @@ public abstract class BaseServiceImpl<T> implements BaseService<T, Integer> {
         }
     }
 
+    @Override
     @Transactional
     public void deleteById(Integer id) throws RuntimeException {
         try {

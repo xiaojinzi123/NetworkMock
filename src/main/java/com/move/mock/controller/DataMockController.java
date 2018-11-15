@@ -2,14 +2,11 @@ package com.move.mock.controller;
 
 import com.move.mock.bean.NetworkDataAccess;
 import com.move.mock.bean.NetworkDataBean;
-import com.move.mock.service.DataMockService;
+import com.move.mock.service.mock.DataMockService;
 import com.move.mock.util.BusinessException;
 import com.move.mock.util.ResultBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * org.springframework.transaction.NoTransactionException: No transaction aspect-managed TransactionStatus in scope
@@ -37,17 +34,27 @@ public class DataMockController {
 
     }
 
+    /**
+     * 这个获取mock数据的接口是不需要用统一的输出对象包一下的!
+     *
+     * @param dataAccess
+     * @return
+     * @throws BusinessException
+     */
     @GetMapping("/data")
-    public ResultBean<String> get(NetworkDataAccess dataAccess) throws BusinessException {
+    @ResponseBody
+    public String get(NetworkDataAccess dataAccess) throws BusinessException {
 
         if (dataAccess == null) {
-            return ResultBean.error("parameter is null");
+            throw new BusinessException("parameter is null");
         }
 
+        dataAccess.setEnv(null);
+
         try {
-            return ResultBean.success(dataMockService.get(dataAccess));
+            return dataMockService.get(dataAccess);
         } catch (BusinessException e) {
-            return ResultBean.error(e.getMessage());
+            throw new BusinessException(e.getMessage());
         }
 
     }

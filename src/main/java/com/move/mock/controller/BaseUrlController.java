@@ -1,13 +1,11 @@
 package com.move.mock.controller;
 
 import com.move.mock.bean.BaseUrlBean;
-import com.move.mock.service.BaseUrlService;
+import com.move.mock.service.baseurl.BaseUrlService;
 import com.move.mock.util.PageResultBean;
 import com.move.mock.util.ResultBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("networkMock")
 @RestController()
@@ -35,6 +33,25 @@ public class BaseUrlController {
     }
 
     /**
+     * 更新一个实体对象
+     *
+     * @param baseUrlBean
+     * @return
+     */
+    @PutMapping("baseUrl")
+    @ResponseBody
+    public ResultBean update(BaseUrlBean baseUrlBean) {
+
+        try {
+            baseUrlService.update(baseUrlBean);
+            return ResultBean.success();
+        } catch (Exception e) {
+            return ResultBean.error(e.getMessage());
+        }
+
+    }
+
+    /**
      * 删除一个对象
      *
      * @param id
@@ -45,7 +62,7 @@ public class BaseUrlController {
     public ResultBean delete(Integer id) {
 
         if (id == null) {
-            ResultBean.error("parameter is null");
+            return ResultBean.error("parameter is null");
         }
 
         try {

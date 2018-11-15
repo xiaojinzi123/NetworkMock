@@ -1,5 +1,6 @@
 package com.move.mock.bean;
 
+import com.move.mock.service.baseurl.BaseUrlCache;
 import com.move.mock.util.TextUtil;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.io.Serializable;
  * 这个实体对象是客户端想获取 mock 数据的入参对象
  * 从数据库检索出 {@link DataMock} 之后转化成为字符串(mock的response json 数据)
  */
-public class NetworkDataAccess implements Serializable {
+public class NetworkDataAccess implements Serializable, BaseUrlCache.OnParseEnvInter {
 
     private String project;
 
@@ -99,7 +100,6 @@ public class NetworkDataAccess implements Serializable {
         if (
                 TextUtil.isEmpty(project) ||
                         TextUtil.isEmpty(platform) ||
-                        TextUtil.isEmpty(env) ||
                         version <= 0 ||
                         TextUtil.isEmpty(requestUrl) ||
                         TextUtil.isEmpty(requestMethod)
